@@ -26,6 +26,15 @@ app.get('/restaurants/:id', (req, res) => {
   res.render('show', { restaurant: clicked })
 })
 
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  const filteredRestaurant = restaurantList.results.filter(function (items) {
+    //items.includes(keyword) doesn't work, should be items.name.includes(keyword) etc.
+    return items.name.toLowerCase().includes(keyword.toLowerCase()) + items.category.toLowerCase().includes(keyword.toLowerCase())
+  })
+  res.render('index', { restaurant: filteredRestaurant, keyword: keyword })
+})
+
 app.listen(port, (req, res) => {
   console.log(`express is running on http://localhost:${port}`)
 })
