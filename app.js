@@ -5,6 +5,19 @@ const port = 3000
 //require express-handlebars
 const handlebars = require('express-handlebars')
 
+//mongoose
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost/restaurant-list', {
+  useNewUrlParser: true, useUnifiedTopology: true
+})
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
 //!!setting template engines
 app.engine('handlebars', handlebars({ defaultLayout: 'layout' }))
 app.set('view engine', 'handlebars')
