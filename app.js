@@ -5,6 +5,8 @@ const port = 3000
 //require express-handlebars
 const handlebars = require('express-handlebars')
 
+const restaurantData = require('./models/restaurantData')
+
 //mongoose
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/restaurant-list', {
@@ -23,13 +25,14 @@ app.engine('handlebars', handlebars({ defaultLayout: 'layout' }))
 app.set('view engine', 'handlebars')
 
 //import files
-const restaurantList = require('./restaurant.json')
 app.use(express.static('public'))// app.use(static('public'))
 
 //routes setting
 app.get('/', (req, res) => {
-  // res.send(`<h1>aloha</h1>`)
-  res.render('index', { restaurant: restaurantList.results })
+  restaurantData.find({})
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
+    .catch(err => console.log(err))
 })
 
 app.get('/restaurants/:id', (req, res) => {
