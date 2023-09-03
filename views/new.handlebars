@@ -1,0 +1,55 @@
+<div class="container my-4">
+  <h1>餐廳資訊</h1>
+  <form action="/restaurants" method="POST">
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">店名<span class="text-danger">*</span></span>
+      <input type="text" class="form-control" placeholder="好吃好吃二號店" name="name" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">英文店名<span class="text-danger">*</span></span>
+      <input type="text" class="form-control" placeholder="YumYum" name="name_en" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">類別<span class="text-danger">*</span></span>
+      <input type="text" class="form-control" placeholder="YumYum" name="category" list="categoryOptions" required>
+      <datalist id="categoryOptions">
+        <option>美式</option>
+        <option>咖啡</option>
+        <option>中東料理</option>
+        <option>日本料理</option>
+        <option>義式餐廳</option>
+      </datalist>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">圖片網址<span class="text-danger">*</span></span>
+      <input type="text" class="form-control"
+        placeholder="https://i0.wp.com/softc.tw/wp-content/uploads/20220215161240_10.jpg?resize=1000%2C667&quality=100&ssl=1"
+        name="image" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">電話號碼<span class="text-danger">*</span></span>
+      <input type="text" class="form-control" placeholder="02 2222-2222" name="phone" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">地址<span class="text-danger"></span></span>
+      <input type="text" class="form-control" placeholder="台北市中正區羅斯福路三段316巷16號2樓" name="location" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">google地圖網址<span class="text-danger"></span></span>
+      <input type="text" class="form-control" placeholder="https://goo.gl/maps/yV9Zu6HgccrkYk5M8" name="google_map"
+        required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">評價<span class="text-danger">*</span></span>
+      <input type="number" class="form-control" min="0" max="5" step="0.5" name="rating" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">描述<span class="text-danger">*</span></span>
+      <textarea type="text" class="form-control" placeholder="全台你找不到如此超平價美味威靈頓牛排，內用自助吧無限吃" name="description"
+        required></textarea>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary">新增餐廳</button>
+    </div>
+  </form>
+</div>

@@ -4,6 +4,9 @@ const app = express()
 const port = 3000
 //require express-handlebars
 const handlebars = require('express-handlebars')
+//body-parser
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
 
 const restaurantData = require('./models/restaurantData')
 
@@ -32,6 +35,18 @@ app.get('/', (req, res) => {
   restaurantData.find({})
     .lean()
     .then(restaurants => res.render('index', { restaurants }))
+    .catch(err => console.log(err))
+})
+
+//新增餐廳頁面
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
+//新增餐廳
+app.post('/restaurants', (req, res) => {
+  restaurantData.create(req.body)
+    .then(() => res.redirect("/"))
     .catch(err => console.log(err))
 })
 
