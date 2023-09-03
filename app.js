@@ -50,11 +50,15 @@ app.post('/restaurants', (req, res) => {
     .catch(err => console.log(err))
 })
 
-app.get('/restaurants/:id', (req, res) => {
-  const clicked = restaurantList.results.find(function (item) {
-    return item.id.toString() === req.params.id
-  })
-  res.render('show', { restaurant: clicked })
+//瀏覽特定餐廳
+app.get("/restaurants/:restaurantId", (req, res) => {
+  const { restaurantId } = req.params
+  // console.log(req.params)
+  // console.log(`id:${restaurantId}`)
+  restaurantData.findById(restaurantId)
+    .lean()
+    .then(restaurant => res.render("show", { restaurant }))
+    .catch(err => console.log(err))
 })
 
 app.get('/search', (req, res) => {
