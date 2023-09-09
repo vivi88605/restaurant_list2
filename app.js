@@ -83,6 +83,14 @@ app.put('/restaurants/:restaurantId', (req, res) => {
     .catch(err => console.log(err))
 })
 
+//刪除餐廳
+app.delete('/restaurants/:restaurantId', (req, res) => {
+  const { restaurantId } = req.params
+  restaurantData.findByIdAndDelete(restaurantId, req.body)
+    .then(() => res.redirect(`/`))
+    .catch(err => console.log(err))
+})
+
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
   const filteredRestaurant = restaurantList.results.filter(function (items) {
