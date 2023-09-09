@@ -7,6 +7,9 @@ const handlebars = require('express-handlebars')
 //body-parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
+//method override
+const methodOverride = require("method-override")
+app.use(methodOverride('_method'))
 
 const restaurantData = require('./models/restaurantData')
 
@@ -58,6 +61,25 @@ app.get("/restaurants/:restaurantId", (req, res) => {
   restaurantData.findById(restaurantId)
     .lean()
     .then(restaurant => res.render("show", { restaurant }))
+    .catch(err => console.log(err))
+})
+
+//編輯餐廳頁面
+app.get('/restaurants/:restaurantId/edit', (req, res) => {
+  const { restaurantId } = req.params
+  // console.log(req.params)
+  // console.log(`id:${restaurantId}`)
+  restaurantData.findById(restaurantId)
+    .lean()
+    .then(restaurant => res.render("edit", { restaurant }))
+    .catch(err => console.log(err))
+})
+
+//編輯餐廳
+app.put('/restaurants/:restaurantId', (req, res) => {
+  const { restaurantId } = req.params
+  restaurantData.findByIdAndUpdate(restaurantId, req.body)
+    .then(() => res.redirect(`/restaurants/${restaurantId}`))
     .catch(err => console.log(err))
 })
 
