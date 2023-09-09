@@ -41,6 +41,28 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
+//搜尋特定餐廳
+app.get("/search", (req, res) => {
+  if (!req.query.keywords) {
+    return res.redirect("/")
+  }
+
+  const keywords = req.query.keywords
+  const keyword = req.query.keywords.trim().toLowerCase()
+
+  restaurantData.find({})
+    .lean()
+    .then(item => {
+      const filteredRestaurants = item.filter(
+        data =>
+          data.name.toLowerCase().includes(keyword) ||
+          data.category.includes(keyword)
+      )
+      res.render("index", { restaurants: filteredRestaurants, keywords })
+    })
+    .catch(err => console.log(err))
+})
+
 //新增餐廳頁面
 app.get('/restaurants/new', (req, res) => {
   res.render('new')
@@ -89,15 +111,6 @@ app.delete('/restaurants/:restaurantId', (req, res) => {
   restaurantData.findByIdAndDelete(restaurantId, req.body)
     .then(() => res.redirect(`/`))
     .catch(err => console.log(err))
-})
-
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  const filteredRestaurant = restaurantList.results.filter(function (items) {
-    //items.includes(keyword) doesn't work, should be items.name.includes(keyword) etc.
-    return items.name.toLowerCase().includes(keyword.toLowerCase()) + items.category.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurant: filteredRestaurant, keyword: keyword })
 })
 
 app.listen(port, (req, res) => {
