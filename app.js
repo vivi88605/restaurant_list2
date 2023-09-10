@@ -7,11 +7,15 @@ const handlebars = require('express-handlebars')
 //body-parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
+//setting template engines
+app.engine('handlebars', handlebars({ defaultLayout: 'layout' }))
+app.set('view engine', 'handlebars')
+//import files
+const restaurantData = require('./models/restaurantData')
+app.use(express.static('public'))
 //method override
 const methodOverride = require("method-override")
 app.use(methodOverride('_method'))
-
-const restaurantData = require('./models/restaurantData')
 
 //mongoose
 const mongoose = require('mongoose')
@@ -26,14 +30,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-//!!setting template engines
-app.engine('handlebars', handlebars({ defaultLayout: 'layout' }))
-app.set('view engine', 'handlebars')
-
-//import files
-app.use(express.static('public'))// app.use(static('public'))
-
-//routes setting
+//瀏覽全部餐廳
 app.get('/', (req, res) => {
   restaurantData.find({})
     .lean()
@@ -46,17 +43,16 @@ app.get("/search", (req, res) => {
   if (!req.query.keywords) {
     return res.redirect("/")
   }
-
   const keywords = req.query.keywords
-  const keyword = req.query.keywords.trim().toLowerCase()
-
+  const processedKeywords = req.query.keywords.trim().toLowerCase()
   restaurantData.find({})
     .lean()
     .then(item => {
       const filteredRestaurants = item.filter(
         data =>
-          data.name.toLowerCase().includes(keyword) ||
-          data.category.includes(keyword)
+          data.name.toLowerCase().includes(processedKeywords)
+          || data.name_en.toLowerCase().includes(processedKeywords)
+          || data.category.toLowerCase().includes(processedKeywords)
       )
       res.render("index", { restaurants: filteredRestaurants, keywords })
     })
